@@ -4,77 +4,80 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+//import lombok.Getter;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
-// import lombok.Builder;
+import lombok.Builder;
+import lombok.Data;
 
 import java.util.*;
-import jakarta.persistence.OneToMany;
 
+import jakarta.persistence.OneToMany;
+//import lombok.AllArgsConstructor;
+//import lombok.NoArgsConstructor;
+//import lombok.Setter;
+
+@Builder
+@Data
 @Entity
 @Table(name = "User")
-// @Builder
 public class User {
 
-    @Id
-    @Column(name = "UserId")
-    private String userId;
+	@Id
+	@Column(name = "UserId")
+	private String userId;
 
-    @Column(name = "userName", nullable = false)
-    private String userName;
+	@Column(name = "userName", nullable = false)
+	private String userName;
 
-    @Column(name = "password")
-    private String password;
+	@Column(name = "password")
+	private String password;
 
-    @Column(name = "Email", unique = true, nullable = false)
-    private String email;
+	@Column(name = "Email", unique = true, nullable = false)
+	private String email;
 
-    @Column(name = "About", columnDefinition = "TEXT")
-    private String about;
+	@Column(name = "About", columnDefinition = "TEXT")
+	private String about;
 
-    @Column(name = "profilePic", columnDefinition = "TEXT")
-    private String profilePic;
+	@Column(name = "profilePic", columnDefinition = "TEXT")
+	private String profilePic;
 
-    @Column(name = "phoneNumber")
-    private String phoneNumber;
+	@Column(name = "phoneNumber")
+	private String phoneNumber;
 
-    private boolean enabled = false;
-    private boolean emailVerufied = false;
-    private boolean phoneVerified = false;
+	private boolean enabled = false;
+	private boolean emailVerified = false;
+	private boolean phoneVerified = false;
 
-    // SELF, GOOGLE, GITHUB
-    private Providers Provider = Providers.SELF;
-    private String providerId;
+	// SELF, GOOGLE, GITHUB
+	private Providers Provider = Providers.SELF;
+	private String providerId;
 
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+	private List<Contact> contact = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-    private List<Contact> contact = new ArrayList<>();
+	public User() {
+		// TODO Auto-generated constructor stub
+	}
 
-   
-
-
-    public User() {
-        // TODO Auto-generated constructor stub
-    }
-
-    public User(String userId, String userName, String password, String email, String about, String profilePic,
-                String phoneNumber, boolean enabled, boolean emailVerufied, boolean phoneVerified, Providers provider,
-                String providerId, List<Contact> contact) {
-        super();
-        this.userId = userId;
-        this.userName = userName;
-        this.password = password;
-        this.email = email;
-        this.about = about;
-        this.profilePic = profilePic;
-        this.phoneNumber = phoneNumber;
-        this.enabled = enabled;
-        this.emailVerufied = emailVerufied;
-        this.phoneVerified = phoneVerified;
-        Provider = provider;
-        this.providerId = providerId;
-        this.contact = contact;
-    }
+	public User(String userId, String userName, String password, String email, String about, String profilePic,
+			String phoneNumber, boolean enabled, boolean emailVerified, boolean phoneVerified, Providers provider,
+			String providerId, List<Contact> contact) {
+		super();
+		this.userId = userId;
+		this.userName = userName;
+		this.password = password;
+		this.email = email;
+		this.about = about;
+		this.profilePic = profilePic;
+		this.phoneNumber = phoneNumber;
+		this.enabled = enabled;
+		this.emailVerified = emailVerified;
+		this.phoneVerified = phoneVerified;
+		Provider = provider;
+		this.providerId = providerId;
+		this.contact = contact;
+	}
 
 	public String getUserId() {
 		return userId;
@@ -140,12 +143,12 @@ public class User {
 		this.enabled = enabled;
 	}
 
-	public boolean isEmailVerufied() {
-		return emailVerufied;
+	public boolean isEmailVerified() {
+		return emailVerified;
 	}
 
-	public void setEmailVerufied(boolean emailVerufied) {
-		this.emailVerufied = emailVerufied;
+	public void setEmailVerified(boolean emailVerified) {
+		this.emailVerified = emailVerified;
 	}
 
 	public boolean isPhoneVerified() {
@@ -179,27 +182,5 @@ public class User {
 	public void setContact(List<Contact> contact) {
 		this.contact = contact;
 	}
-	   
-	
-   
+
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

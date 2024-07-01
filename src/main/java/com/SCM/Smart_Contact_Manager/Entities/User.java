@@ -1,6 +1,8 @@
 package com.SCM.Smart_Contact_Manager.Entities;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
@@ -50,6 +52,7 @@ public class User {
 	private boolean phoneVerified = false;
 
 	// SELF, GOOGLE, GITHUB
+	@Enumerated(value = EnumType.STRING)
 	private Providers Provider = Providers.SELF;
 	private String providerId;
 

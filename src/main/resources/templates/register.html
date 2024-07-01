@@ -12,12 +12,13 @@
       <div class="grid grid-cols-12 mt-2">
         <div class="col-span-4 md:col-span-2 lg:col-span-4 xl:col-span-4"></div>
         <div class="col-span-12 md:col-span-8 lg:col-span-6 xl:col-span-4">
-
-            <!-- card  -->
+          <!-- card  -->
           <div
             href="#"
-            class="block p-6 border-t-[7px] border-blue-600 dark:border-t-blue-600  rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800  dark:hover:bg-gray-900" 
+            class="block p-6 border-t-[7px] border-blue-600 dark:border-t-blue-600 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:hover:bg-gray-900"
           >
+            <!-- message here  -->
+            <div data-th-replace="message::messageBox"></div>
             <h5
               class="mb-1 text-2xl font-bold tracking-tight text-gray-900 dark:text-blue-500"
             >
@@ -29,10 +30,10 @@
 
             <!-- --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- -->
             <!-- thisis our form  -->
-            <form 
-              data-th-action="@{'/do-register'}" 
+            <form
+              data-th-action="@{'/do-register'}"
               method="post"
-              data-th-object="${userForm}" 
+              data-th-object="${userForm}"
               class="mt-3"
             >
               <!-- user name -->
@@ -138,7 +139,6 @@
                   Reset
                 </button>
               </div>
-
             </form>
           </div>
         </div>

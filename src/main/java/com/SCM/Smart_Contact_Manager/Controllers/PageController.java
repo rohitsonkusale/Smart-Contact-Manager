@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+
 import com.SCM.Smart_Contact_Manager.Entities.User;
 import com.SCM.Smart_Contact_Manager.Forms.UserForm;
 import com.SCM.Smart_Contact_Manager.Services.UserService;
@@ -14,7 +15,6 @@ import com.SCM.Smart_Contact_Manager.helpers.Message;
 import com.SCM.Smart_Contact_Manager.helpers.MessageType;
 
 import jakarta.servlet.http.HttpSession;
-import lombok.Builder;
 
 @Controller
 public class PageController {
@@ -94,9 +94,7 @@ public class PageController {
 		user.setPassword(userForm.getPassword());
 		user.setPhoneNumber(userForm.getPhoneNumber());
 		user.setAbout(userForm.getAbout());
-		user.setProfilePic("");
-		
-		
+		user.setProfilePic("");		
 		
 //		user service
 		User savedUser = userService.saveUser(user);
@@ -112,7 +110,8 @@ public class PageController {
 		
 		Message message = new Message();
         message.setContent("Registration Successful");
-        message.setType(MessageType.red);
+        message.setType(MessageType.green);
+		session.setAttribute("message", message);
 		
 		// return "redirect:/login";
 		return "redirect:/register";

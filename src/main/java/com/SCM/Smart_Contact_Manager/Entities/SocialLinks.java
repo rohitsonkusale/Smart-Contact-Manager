@@ -17,7 +17,7 @@ public class SocialLinks {
     private String title;
 
     public SocialLinks() {
-		// TODO Auto-generated constructor stub
+		
 	}
 
 	public SocialLinks(long id, String link, String title) {

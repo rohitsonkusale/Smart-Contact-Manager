@@ -1,5 +1,8 @@
 package com.SCM.Smart_Contact_Manager.Forms;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -11,10 +14,22 @@ import lombok.ToString;
 @Builder
 public class UserForm {
 
+	@NotBlank(message = "Username is required")
+	@Size(min = 3, message = "Minimum 3 Character is required")
     public String userName;
+	
+	@Email(message = "Invaild Email address")
+	@NotBlank(message = "Email is required")
     public String email;
+	
+	@NotBlank(message = "Password is required")
+	@Size(min = 6, message = "Minimum 6 character is required")
     public String password;
+	
+	@NotBlank(message = "About is reqiured")
     public String about;
+	
+	@Size(min = 8, max = 12, message = "Invalid Phone Number")
     public String phoneNumber;
     
     public UserForm() {

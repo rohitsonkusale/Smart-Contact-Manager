@@ -94,7 +94,7 @@ public class PageController {
 		// 		.build();
 		
 		User user = new User();
-		user.setUserName(userForm.getuserName());
+		user.setname(userForm.getuserName());
 		user.setEmail(userForm.getEmail());
 		user.setPassword(userForm.getPassword());
 		user.setPhoneNumber(userForm.getPhoneNumber());

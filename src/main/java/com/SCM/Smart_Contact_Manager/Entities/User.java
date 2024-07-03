@@ -1,36 +1,44 @@
 package com.SCM.Smart_Contact_Manager.Entities;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+//import lombok.Getter;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-//import lombok.Getter;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import lombok.Builder;
-import lombok.Data;
-
-import java.util.*;
-
 import jakarta.persistence.OneToMany;
 //import lombok.AllArgsConstructor;
 //import lombok.NoArgsConstructor;
 //import lombok.Setter;
+import jakarta.persistence.Table;
+import lombok.Builder;
+import lombok.Data;
 
+//@SuppressWarnings("serial")
 @Builder
 @Data
 @Entity
 @Table(name = "User")
-public class User {
+public class User implements UserDetails{
 
 	@Id
 	@Column(name = "UserId")
 	private String userId;
 
 	@Column(name = "userName", nullable = false)
-	private String userName;
+	private String name;
 
 	@Column(name = "password")
 	private String password;
@@ -47,7 +55,7 @@ public class User {
 	@Column(name = "phoneNumber")
 	private String phoneNumber;
 
-	private boolean enabled = false;
+	private boolean enabled = true;
 	private boolean emailVerified = false;
 	private boolean phoneVerified = false;
 
@@ -63,12 +71,12 @@ public class User {
 		// TODO Auto-generated constructor stub
 	}
 
-	public User(String userId, String userName, String password, String email, String about, String profilePic,
+	public User(String userId, String name, String password, String email, String about, String profilePic,
 			String phoneNumber, boolean enabled, boolean emailVerified, boolean phoneVerified, Providers provider,
 			String providerId, List<Contact> contact) {
 		super();
 		this.userId = userId;
-		this.userName = userName;
+		this.name = name;
 		this.password = password;
 		this.email = email;
 		this.about = about;
@@ -90,17 +98,17 @@ public class User {
 		this.userId = userId;
 	}
 
-	public String getUserName() {
-		return userName;
+	public String getname() {
+		return name;
 	}
 
-	public void setUserName(String userName) {
-		this.userName = userName;
+	public void setname(String userName) {
+		this.name = userName;
 	}
 
-	public String getPassword() {
-		return password;
-	}
+//	public String getPassword() {
+//		return password;
+//	}
 
 	public void setPassword(String password) {
 		this.password = password;
@@ -136,10 +144,6 @@ public class User {
 
 	public void setPhoneNumber(String phoneNumber) {
 		this.phoneNumber = phoneNumber;
-	}
-
-	public boolean isEnabled() {
-		return enabled;
 	}
 
 	public void setEnabled(boolean enabled) {
@@ -186,4 +190,53 @@ public class User {
 		this.contact = contact;
 	}
 
+	@ElementCollection(fetch = FetchType.EAGER)
+	private List<String> roleList = new ArrayList<>();
+	
+	public List<String> getRoleList() {
+		return roleList;
+	}
+
+	public void setRoleList(List<String> roleList) {
+		this.roleList = roleList;
+	}
+
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		//list of roles[USER, ADMIN]
+		//Collection of SimpleGrantedAuthority[roles{ADMIN, USER}]
+		Collection<SimpleGrantedAuthority> roles = roleList.stream().map(role-> new SimpleGrantedAuthority(role)).collect(Collectors.toList());
+		return roles;
+	}
+
+	@Override
+	public String getUsername() {
+		return this.email;
+	}
+
+	@Override
+	public boolean isAccountNonExpired() { 
+		return true;
+	}
+
+	@Override
+	public boolean isAccountNonLocked() {
+		return true;
+	}
+
+	@Override
+	public boolean isCredentialsNonExpired() {
+		return true;
+	}
+
+	@Override
+	public boolean isEnabled() {
+		return this.enabled;
+	}
+
+	@Override
+	public String getPassword() {
+		// TODO Auto-generated method stub
+		return this.password;
+	}
 }

@@ -6,9 +6,11 @@ import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.SCM.Smart_Contact_Manager.Entities.User;
 import com.SCM.Smart_Contact_Manager.Repositories.UserRepository;
+import com.SCM.Smart_Contact_Manager.helpers.AppConstants;
 import com.SCM.Smart_Contact_Manager.helpers.ResourceNotFoundException;
 
 @Service
@@ -16,13 +18,25 @@ public class UserService {
 
 	@Autowired
 	private UserRepository userRepo;
+	
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	public User saveUser(User user) {
-		logger.info("Saving user: {}", user);
+//		user id: have to generate
 		String userId = UUID.randomUUID().toString();
 		user.setUserId(userId);
+		//password encode
+		// user.setPassword(userId);
+		user.setPassword(passwordEncoder.encode(user.getPassword()));
+		
+		//set the user role
+		user.setRoleList(List.of(AppConstants.ROLE_USER));
+		
+		logger.info(user.getProvider().toString());
+		
 		return userRepo.save(user);
 	}
 
@@ -34,7 +48,7 @@ public class UserService {
 		User user2 = userRepo.findById(user.getUserId())
 				.orElseThrow(() -> new ResourceNotFoundException("User Not Found"));
 		// update karenge user2 ko user se
-		user2.setUserName(user.getUserName());
+		user2.setname(user.getname());
 		user2.setEmail(user.getEmail());
 		user2.setPassword(user.getPassword());
 		user2.setPhoneNumber(user.getPhoneNumber());
